@@ -84,7 +84,7 @@ def main(filepath_slam, filepath_detection, filepath_combined, filepath_unpacked
                 detection_objects_pos_x.append(object_pos_x)
                 parser_state = "y"
             elif (parser_state == "y") and ("y:" in part):
-                object_pos_y = float(part.split(" ")[-1])
+                object_pos_y = float(part.split(" ")[-1]) * -1  # for consistency with SLAM frames
                 detection_objects_pos_y.append(object_pos_y)
                 parser_state = "z"
             elif (parser_state == "z") and ("z:" in part):
