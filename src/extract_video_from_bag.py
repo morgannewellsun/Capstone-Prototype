@@ -23,7 +23,9 @@ def main(filepath_bag, filepath_video, directory_frames):
 
         # # inspect topics
         # for connection in reader.connections.values():
-        #     print(connection.topic, connection.msgtype)
+        #     print("Connection topic: ", connection.topic)
+        #     print("Connection message type: ", connection.msgtype)
+        #     print("")
         # raise Exception
 
         # # get fps
