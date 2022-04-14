@@ -131,16 +131,7 @@ class MultiObjectTracker:
         """
         :param tracked_objects_id: List[int], list of object class ids to track
         """
-        # =====================================================================
-        # HYPERPARAMETERS
-        # =====================================================================
-
-        # list of object class ids to track
         self.tracked_objects_id = tracked_objects_id
-
-        # =====================================================================
-        # MEMORY
-        # =====================================================================
         self.single_object_trackers = dict()
         for tracked_object_id in self.tracked_objects_id:
             self.single_object_trackers.update({tracked_object_id: SingleObjectTracker()})
@@ -150,9 +141,9 @@ class MultiObjectTracker:
             camera_pose_pos_np, camera_pose_rot_np,
             detection_time, detection_objects_id, detection_objects_pos_np):
         """
-        Update object location trackers.
-        Call this function for each object-detection timestep.
-        Make sure that the y-coordinates in input detection_objects_pos_np are flipped for consistency with RHR.
+        Update object location trackers. Call this function for each
+        object-detection timestep. Make sure that the y-coordinates in the input
+        detection_objects_pos_np data are inverted for consistency with RHR.
 
         :param camera_pose_pos_np: ndarray[float], shape (3,), inertial frame
         :param camera_pose_rot_np: ndarray[float], shape (4,), inertial frame
@@ -171,8 +162,10 @@ class MultiObjectTracker:
 
     def get_tracked_objects_cameraframe_pos(self, camera_pose_pos_np, camera_pose_rot_np):
         """
-        Get locations of tracked objects in the camera frame.
-        Call this function for each SLAM timestep.
+        Get locations of tracked objects in the camera frame. When tracking N
+        objects, this function always returns a list of N positions sorted
+        in the same order. None is used as a placeholder for objects which have
+        not been seen yet. Call this function for each SLAM timestep.
 
         :param camera_pose_pos_np: ndarray[float], shape (3,)
         :param camera_pose_rot_np: ndarray[float], shape (4,)
@@ -188,7 +181,11 @@ class MultiObjectTracker:
 
 def annotate_frame(frame_image_np, detection_objects_pos_np, tracked_objects_pos_np, colors, intrinsic_matrix_np):
     """
-    Annotates, in-place, a video frame with detected and tracked objects
+    Annotates, in-place, a video frame with detected and tracked objects.
+    When annotating N tracked objects, this function always expects the lists
+    of detection/tracked positions to have length N, and always be sorted in the
+    same order. If the detection/tracked position for an object is not
+    available, use None as a placeholder to skip it.
 
     :param frame_image_np: ndarray[uint8]
     :param detection_objects_pos_np: List[Union[ndarray[float], None]], shapes (3,), camera frame
@@ -304,6 +301,7 @@ def main(filepath_combined, filepath_unpacked, directory_frames, directory_annot
 
 
 if __name__ == "__main__":
+
     # inputs
     filepath_combined = r"D:\Documents\Academics\ROB498\Capstone-Prototype\data\combined.csv"
     filepath_unpacked = r"D:\Documents\Academics\ROB498\Capstone-Prototype\data\unpacked.csv"
